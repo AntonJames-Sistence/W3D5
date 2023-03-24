@@ -1,7 +1,7 @@
 class PolyTreeNode
     # attr_reader :parent, :children, :value
 
-    def initialize(node_name)
+    def initialize(node_name, children)
         @new_node = node_name
         @parent = nil
         @children = []
@@ -19,7 +19,7 @@ class PolyTreeNode
         @new_node
     end
 
-    # def parent=(property)
-    #     @children << 
-    # end
+    def parent=(property)
+        @parent.children << property
+    end
 end
