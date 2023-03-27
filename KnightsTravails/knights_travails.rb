@@ -5,18 +5,38 @@ class KnightPathFinder
 
     def initialize(position)
         @position = position
-        # build_move_tree
+        @considered_positions = [position]
     end
 
     def root_node
         @position
     end
 
-    # def build_move_tree
-        
-    # end
 
-    def self.valid_moves(pos) # pos => array[row, col]
+    def bfs(target) 
+        queue = [self]
+
+        until queue.empty?
+            node = queue.shift
+            return node if node.value == target
+            node.children.each do |child|
+                queue.push(child)
+            end
+        end
+        nil
+    end
+
+    def build_move_tree(target)
+        queue = @considered_positions
+
+        until queue.empty?
+            node = queue.shift
+            return node if node.position == target
+            node.considered_positions.
+
+    end
+
+    def self.valid_moves(pos) # pos => array[row, col] # this does not filter for out-of-bounds positions YET
         pos = row, col
         possible_moves = [
 
@@ -33,6 +53,13 @@ class KnightPathFinder
 
     def valid_moves?(pos)
         pos = row, col
-        KnightPathFinder.valid_moves.each.select { |position| }
+        # KnightPathFinder.valid_moves.each.select { |position| } #
+    end
+
+    def new_move_positions(pos)
+        pos = row, col
+        KnightPathFinder.valid_moves(pos).each do |position|
+            @considered_positions << position if !@considered_positions.include?(position)
+        end
     end
 end
