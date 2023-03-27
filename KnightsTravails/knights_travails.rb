@@ -4,56 +4,68 @@ class KnightPathFinder
     # attr_reader :position
 
     def initialize(position)
+        @root_node = PolyTreeNode.new(position)
         @position = position
         @considered_positions = [position]
     end
 
-    def root_node
-        @position
-    end
+    # def bfs(target) 
+    #     queue = [self]
 
+    #     until queue.empty?
+    #         node = queue.shift
+    #         return node if node.value == target
+    #         node.children.each do |child|
+    #             queue.push(child)
+    #         end
+    #     end
+    #     nil
+    # end
 
-    def bfs(target) 
-        queue = [self]
+    def build_move_tree
+        queue = [@root_node]
 
         until queue.empty?
             node = queue.shift
-            return node if node.value == target
-            node.children.each do |child|
-                queue.push(child)
+            possible_moves = new_move_positions(node)
+            possible_moves.each do |position|
+                next if @considered_positions.include?(position) #checks if we've been here before
+                new_child = PolyTreeNode.new(position)
+                new_child.parent= (node)
+                queue << new_child
             end
         end
-        nil
-    end
-
-    def build_move_tree(target)
-        queue = @considered_positions
-
-        until queue.empty?
-            node = queue.shift
-            return node if node.position == target
-            node.considered_positions.
-
     end
 
     def self.valid_moves(pos) # pos => array[row, col] # this does not filter for out-of-bounds positions YET
         pos = row, col
-        possible_moves = [
-
-        pos_pos1 = [row-2, col-1]
-        pos_pos2 = [row-2, col+1]
-        pos_pos3 = [row-1, col+2]
-        pos_pos4 = [row+1, col+2]
-        pos_pos5 = [row+2, col+1]
-        pos_pos6 = [row+2, col-1]
-        pos_pos7 = [row+1, col-2]
-        pos_pos8 = [row-1, col-2]
+        new_arr = []
+        constant_moves = [
+            [1, 2], 
+            [-1, 2], 
+            [1, -2], 
+            [-1, -2],
+            [2, 1],
+            [-2, 1],
+            [2, -1],
+            [-2, -1]
         ]
+        constant_moves.eaach do |move|
+            move = dx, dy
+            new_pos = [row + dx, col + dy]
+            new_arr << new_pos if valid_position?(new_pos)
+        end
+        new_arr
     end
 
-    def valid_moves?(pos)
+    def valid_position?(pos)
         pos = row, col
-        # KnightPathFinder.valid_moves.each.select { |position| } #
+        if row < 0 || row > 7 
+            return false
+        elsif col < 0 || col > 7
+            return false
+        end
+        true
     end
 
     def new_move_positions(pos)
