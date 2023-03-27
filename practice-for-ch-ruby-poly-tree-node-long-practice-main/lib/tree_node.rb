@@ -37,4 +37,32 @@ class PolyTreeNode
     def add_child(child)
         child.parent=(self)
     end
+
+    def remove_child(child)
+        child.parent=(nil)
+        raise "invalid child" if child == nil  #maybe revisit
+    end
+
+    def bfs(target) 
+        queue = [self]
+
+        until queue.empty?
+            node = queue.shift
+            return node if node.value == target
+            node.children.each do |child|
+                queue.push(child)
+            end
+        end
+        nil
+    end
+
+    def dfs(target)
+        # return nil if self == nil
+        return self if self.value == target
+        self.children.each do |child|
+            search_step = child.dfs(target)
+            return search_step unless search_step == nil
+        end
+        nil
+    end
 end
