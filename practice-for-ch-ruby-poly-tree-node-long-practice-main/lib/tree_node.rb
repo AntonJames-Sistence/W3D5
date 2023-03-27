@@ -33,4 +33,8 @@ class PolyTreeNode
             @parent = my_parent_node
         end
     end
+
+    def add_child(child)
+        child.parent=(self)
+    end
 end
